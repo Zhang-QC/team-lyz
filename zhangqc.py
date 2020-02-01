@@ -6,6 +6,10 @@ Jason Zhang
 
 import bs4
 import requests
+import util
+import tuo
+import jenny
+
 
 def get_uniprot_id(pdb_id):
 	'''
@@ -32,3 +36,17 @@ def get_uniprot_id(pdb_id):
 					return check_url[31:]
 	print("Your PDB ID is not valid.")
 	return None
+
+
+def is_sequence(seq):
+	'''
+	Check if a sequence is a valid amino acid sequence. A valid AA sequence 
+	must have all uppercase letters that corresponds to the 20 one-letter amino
+	acid codes.
+	'''
+	for i in seq:
+		if i not in util.AMINO_ACIDS:
+			return False
+	return True
+
+

@@ -1,6 +1,13 @@
 import bs4
 import requests
 
+AMINO_ACIDS = {"A": "alanine", "R": "arginine", "N": "asparagine", 
+"D": "aspartate", "C": "cysteine", "E": "glutamate", "Q": "glutamine",
+"G": "glycine", "H": "histidine", "I": "isoleucine", "L": "leucine",
+"K": "lysine", "M": "methionine", "F": "phenylalanine", "P": "proline",
+"S": "serine", "T": "threonine", "W": "tryptophan", "Y": "tyrosine",
+"V": "valine"}
+
 def get_uniprot_id(pdb_id):
 	'''
 	Input a Protein Data Base ID code, produce the associated UniProt ID code.
@@ -43,6 +50,11 @@ class protein:
 		'''
 		Parse the FASTA file and determine the name, species, and sequence 
 		of the protein.
+
+		Output:
+			name: string
+			species: string
+			sequence: string
 		'''
 		name = ''
 		species = ''
@@ -62,3 +74,81 @@ class protein:
 		'''
 		seq = self.sequence
 		return None
+
+	def __repr__(self):
+		str = self.name + " from " + self.species + " is a " + self.length \
+		+ "peptides long protein with UniProt ID: " + self.uniprot_id
+		return str		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
