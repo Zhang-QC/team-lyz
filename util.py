@@ -36,7 +36,7 @@ def get_uniprot_id(pdb_id):
 
 
 class protein:
-	def __init__(self, pdb_id = '', uniprot_id):
+	def __init__(self, pdb_id, uniprot_id):
 		self.pdb_id = pdb_id
 		self.uniprot_id = uniprot_id
 		self.fasta = tuo.get_fasta(uniprot_id)
