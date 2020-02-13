@@ -12,8 +12,6 @@ def get_fasta(uniprot_id):
     return str(tags[0].text)
 
 
-
-
 def read_fasta(fast_str):
     strin = fast_str.split('\n')
     substr = strin[0]
@@ -23,6 +21,7 @@ def read_fasta(fast_str):
         if sub_list != ' ':
             total_list.append(sub_list)
     return total_list
+    
 
 def code_search(url):
     r = requests.get(url)
