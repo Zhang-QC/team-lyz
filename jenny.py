@@ -15,11 +15,11 @@ import sys
 import csv
 
 def find_next(url):
-    next_page_text = bs.find('ulr', class_="SearchBreadcrumbs").findAll('li')[-1].text
-    if next_page_text = 'Next':
-        next_page_partial = bs.find('ul',class_="SearchBreadcrumbs").findAll('li')[-1].find('a')['href']
-            next_page_url = base_url + next_page_partial
-            return(next_page_url)
+    next_page_text = bs4.next_sibling('url', class_="SearchBreadcrumbs").findAll('li')[-1].text
+    if next_page_text == 'Next':
+        next_page_partial = bs4.next_sibling('ul',class_="SearchBreadcrumbs").findAll('li')[-1].next_sibling('a')['href']
+        next_page_url = base_url + next_page_partial
+        return(next_page_url)
     else:
         return None
 
