@@ -15,7 +15,7 @@ def get_fasta(uniprot_id):
 def read_fasta(fast_str):
     strin = fast_str.split('\n')
     substr = strin[0]
-    sub_list = re.find_all('([A-Z][0-9]{5}),([A-Z0-9]{4}_[A-Z]{5}),(OS=[A-Z][a-z\s]+),(OX=[0-9]{4}),(GN=[A-Za-z0-9]{5}),(PE=[0-9]),(SV=[0-9])', substr)
+    sub_list = re.findall('([A-Z][0-9]{5}),([A-Z0-9]{4}_[A-Z]{5}),(OS=[A-Z][a-z\s]+),(OX=[0-9]{4}),(GN=[A-Za-z0-9]{5}),(PE=[0-9]),(SV=[0-9])', substr)
     total_list = sub_list
     for sub_list in strin[1:]:
         if sub_list != ' ':
