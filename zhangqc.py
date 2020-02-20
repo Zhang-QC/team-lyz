@@ -50,3 +50,18 @@ def is_sequence(seq):
 	return True
 
 
+def parse_fasta(st):
+	'''
+	Taking in a FASTA string, return the name species and sequence of the 
+	associated protein.
+	
+	Input:
+		st: a string from a FASTA file
+
+	Output:
+		name: string
+		species: string
+		sequence: string
+	'''
+
+	
