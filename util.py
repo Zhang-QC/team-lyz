@@ -1,5 +1,8 @@
 import bs4
 import requests
+import re
+import urllib3
+import certifi
 
 AMINO_ACIDS = {"A": "alanine", "R": "arginine", "N": "asparagine", 
 "D": "aspartate", "C": "cysteine", "E": "glutamate", "Q": "glutamine",
@@ -33,6 +36,89 @@ def get_uniprot_id(pdb_id):
 					return check_url[31:]
 	print("Your PDB ID is not valid.")
 	return None
+
+def get_fasta(uniprot_id):
+    uniprot_url = "https://www.uniprot.org/uniprot/" + uniprot_id + ".fasta"
+    r = requests.get(uniprot_url)
+    text = r.text.encode()
+    soup = bs4.BeautifulSoup(text, "html5lib")
+    tags = soup.find_all("body")
+
+    return str(tags[0].text)
+
+
+def read_fasta(fast_str):
+    strin = fast_str.split('\n')
+    substr = strin[0]
+    sub_list = re.find_all('([A-Z][0-9]{5}),([A-Z0-9]{4}_[A-Z]{5}),(OS=[A-Z][a-z\s]+),(OX=[0-9]{4}),(GN=[A-Za-z0-9]{5}),(PE=[0-9]),(SV=[0-9])', substr)
+    total_list = sub_list
+    for sub_list in strin[1:]:
+        if sub_list != ' ':
+            total_list.append(sub_list)
+    return total_list
+    
+
+def code_search(url):
+    r = requests.get(url)
+    text = r.text.encode()
+    soup = bs4.BeautifulSoup(text,"html5lib")
+    tags = soup.find_all("a")
+    s = ""
+    for tag in tags:
+        s += tag.text
+    match=re.findall('[A-Z][0-9][A-Z0-9]{3}[0-9]',s)
+    return match
+
+
+
+def find_uni_start(protein_name):
+    return 'https://www.uniprot.org/uniprot/?query=' + protein_name +'&sort=score'
+
+def find_nextpage(url):
+    '''
+    Takes an URL and find the url for next page
+
+    Inputs:
+        url: the current url
+
+    Return: the url for next page
+    '''
+    pm = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs = certifi.where())
+    html = pm.urlopen(url=url, method='GET').data
+    soup = bs4.BeautifulSoup(html)
+    tags = soup.find_all("a", class_="nextPageLink")
+    if tags:
+        link = set()
+        for tag in tags:
+            if tag.has_attr('href'):
+                link.add(tag['href'])
+        return list(link)[0]
+    return None
+
+                
+
+def get_similar(protein_name, max = 20):
+    protein_name = protein_name.lower()
+    url = find_uni_start(protein_name)
+    n = 0
+    result = []
+    while n < max:
+        if url == None:
+            break
+        result += code_search(url)
+        url = find_nextpage(url)
+        print(url)
+    return result
+
+
+
+
+
+
+
+
+
+
 
 
 class protein:
