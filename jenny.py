@@ -38,6 +38,12 @@ def find_nextpage(url):
         if tag.has_attr('href'):
             link.add(tag['href'])
     return list(link)[0]
+
+
+def find_uni_start(protein_name):
+    return 'https://www.uniprot.org/uniprot/?query=' + protein_name +'&sort=score'
+
+
   
 
 
