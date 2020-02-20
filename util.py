@@ -115,8 +115,8 @@ def get_similar(protein_name, nmax = 20):
         url = find_nextpage(url)
         print(url)
     if n < nmax:
-    	diff = nmax-diff
-    	result+= code_search(url)[:diff]
+        diff = nmax-diff
+        result+= code_search(url)[:diff]
     return result
 
 
