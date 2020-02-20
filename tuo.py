@@ -27,9 +27,22 @@ def code_search(url):
     r = requests.get(url)
     text = r.text.encode()
     soup = bs4.BeautifulSoup(text,"html5lib")
+    table = soup.find("table")
+    trs = table.find("tbody").find_all('tr')
+    lst_codes = []
+    for row in trs:
+        lst_codes.append(row.attrs["id"])
+    return lst_codes
+
+
+    '''
     tags = soup.find_all("a")
     s = ""
     for tag in tags:
-        s += tag.text
-    match=re.findall('[A-Z][0-9][A-Z0-9]{3}[0-9]',s)
+        s += tag.text + " "
+    #match=re.findall('[A-Z][0-9][A-Z0-9]{3}[0-9]',s)
+    #match = re.findall('[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}',s)
+    #match = re.findall('[OPQ][0-9][A-Z0-9]{3}[0-9]',s)
+    match = re.findall('[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}',s)
     return match
+    '''
