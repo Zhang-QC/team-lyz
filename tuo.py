@@ -20,7 +20,7 @@ def read_fasta(fast_str):
     for sub_list in strin[1:]:
         if sub_list != ' ':
             total_list.append(sub_list)
-    return total_list
+    return "".join(total_list)
     
 
 def code_search(url):
