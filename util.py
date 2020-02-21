@@ -3,6 +3,9 @@ import requests
 import re
 import urllib3
 import certifi
+import pa2util
+
+
 
 AMINO_ACIDS = {"A": "alanine", "R": "arginine", "N": "asparagine", 
 "D": "aspartate", "C": "cysteine", "E": "glutamate", "Q": "glutamine",
@@ -91,33 +94,30 @@ def find_nextpage(url):
         link = set()
         for tag in tags:
             if tag.has_attr('href'):
-                link.add(tag['href'])
+                rv = pa2util.convert_if_relative_url(url, tag['href'])
+                link.add(rv)
         return list(link)[0]
     return None
 
                 
 
-def get_similar(protein_name, max = 20):
+def get_similar(protein_name, nmax = 20):
     protein_name = protein_name.lower()
     url = find_uni_start(protein_name)
     n = 0
     result = []
-    while n < max:
+    while n < nmax:
         if url == None:
             break
-        result += code_search(url)
+        similar = code_search(url)
+        result += similar
+        n+=len(similar)
         url = find_nextpage(url)
         print(url)
+    if n < nmax:
+        diff = nmax-diff
+        result+= code_search(url)[:diff]
     return result
-
-
-
-
-
-
-
-
-
 
 
 
