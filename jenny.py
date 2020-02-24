@@ -45,6 +45,10 @@ def find_nextpage(url):
 def find_uni_start(protein_name):
     return 'https://www.uniprot.org/uniprot/?query=' + protein_name +'&sort=score'
 
+
+
+
+
 #prefer to have dictionary with id as key and alignment as value
 def create_MSA(alignment_list):
     align = MultipleSeqAlignment([], Gapped(IUPAC.unambiguous_dna, "-"))
@@ -76,7 +80,7 @@ def get_frequency(align, amino, position):
     for record in align:
         if record.seq[position] == amino:
             n+=1
-    return f = n/M
+    return n/M
 
 
 
@@ -103,7 +107,7 @@ def joint_dis(align, a1, a2, p1, p2):
     for record in align:
         if record.seq[p1] == a1 and record.seq[p1] == a2:
             n+=1
-    return f = n/M
+    return n/M
 
 
 
