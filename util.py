@@ -128,7 +128,7 @@ def create_MSA(protein_name, nmax):
 	for id_ in similars:
 		fasta = get_fasta(id_)
 		protein_align = read_fasta(fasta)
-		alignment_list[id_] = protein_align.join('')
+		alignment_list[id_] = ''.join(protein_align)
 	align = MultipleSeqAlignment([], Gapped(IUPAC.unambiguous_dna, "-"))
 	for id_ in alignment_list.keys():
 		align.add_sequence(id_, alignment_list[id_])
