@@ -4,6 +4,8 @@ import re
 import urllib3
 import certifi
 import pa2util
+from Bio.Alphabet import IUPAC, Gapped
+from Bio.Align import MultipleSeqAlignment
 
 
 
@@ -53,7 +55,7 @@ def get_fasta(uniprot_id):
 def read_fasta(fast_str):
     strin = fast_str.split('\n')
     substr = strin[0]
-    sub_list = re.find_all('([A-Z][0-9]{5}),([A-Z0-9]{4}_[A-Z]{5}),(OS=[A-Z][a-z\s]+),(OX=[0-9]{4}),(GN=[A-Za-z0-9]{5}),(PE=[0-9]),(SV=[0-9])', substr)
+    sub_list = re.findall('([A-Z][0-9]{5}),([A-Z0-9]{4}_[A-Z]{5}),(OS=[A-Z][a-z\s]+),(OX=[0-9]{4}),(GN=[A-Za-z0-9]{5}),(PE=[0-9]),(SV=[0-9])', substr)
     total_list = sub_list
     for sub_list in strin[1:]:
         if sub_list != ' ':
@@ -65,12 +67,12 @@ def code_search(url):
     r = requests.get(url)
     text = r.text.encode()
     soup = bs4.BeautifulSoup(text,"html5lib")
-    tags = soup.find_all("a")
-    s = ""
-    for tag in tags:
-        s += tag.text
-    match=re.findall('[A-Z][0-9][A-Z0-9]{3}[0-9]',s)
-    return match
+    table = soup.find("table")
+    trs = table.find("tbody").find_all('tr')
+    lst_codes = []
+    for row in trs:
+        lst_codes.append(row.attrs["id"])
+    return lst_codes
 
 
 
@@ -118,6 +120,19 @@ def get_similar(protein_name, nmax = 20):
         diff = nmax-diff
         result+= code_search(url)[:diff]
     return result
+
+
+def create_MSA(protein_name, nmax):
+	similars = get_similar(protein_name, nmax)
+	alignment_list = {}
+	for id_ in similars:
+		fasta = get_fasta(id_)
+		protein_align = read_fasta(fasta)
+		alignment_list[id_] = ''.join(protein_align)
+	align = MultipleSeqAlignment([], Gapped(IUPAC.unambiguous_dna, "-"))
+	for id_ in alignment_list.keys():
+		align.add_sequence(id_, alignment_list[id_])
+	return align
 
 
 

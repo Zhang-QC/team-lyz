@@ -34,6 +34,19 @@ def code_search(url):
         lst_codes.append(row.attrs["id"])
     return lst_codes
 
+def pymol_command(colors, lst_name, resi):
+    setting = "set_color " + lst_name + " = " + str(colors)
+    implement = []
+    for r in resi:
+        implement.append("color " + lst_name + ", " + "resi " + str(r))
+    return setting, implement
+
+def transparency(level,resi):
+    strings = []
+    for r in resi:
+        strings.append("set transparency, " + str(level) + ", " + "i. " + str(r))
+    return strings
+
 
     '''
     tags = soup.find_all("a")
