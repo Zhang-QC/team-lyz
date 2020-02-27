@@ -9,17 +9,22 @@ from operator import and_
 
 from django.shortcuts import render
 from django import forms
-from django.http import HttpResponse
-from django.template import loader
 
 from util_test import get_fasta
 
+NOPREF_STR = 'No preference'
+RES_DIR = os.path.join(os.path.dirname(__file__), '..', 'res')
+COLUMN_NAMES = dict(
+    dept='Deptartment',
+    course_num='Course',
+    section_num='Section',
+    day='Day',
+    time_start='Time (start)',
+    time_end='Time (end)',
+    enroll='Enrollment',
+)
 
-# Create your views here.
 
-#def index(request):
-    #return HttpResponse("Hello, world. You're at the lyz index.")
-    #return SearchForm(request)
 def _valid_result(pdb):
     '''
     Validate results returned by find_courses.
@@ -44,6 +49,31 @@ def _valid_result(pdb):
     return False
 
 
+'''
+
+def _valid_military_time(time):
+    return (0 <= time < 2400) and (time % 100 < 60)
+
+
+def _load_column(filename, col=0):
+    """Load single column from csv file."""
+    with open(filename) as f:
+        col = list(zip(*csv.reader(f)))[0]
+        return list(col)
+
+
+def _load_res_column(filename, col=0):
+    """Load column from resource directory."""
+    return _load_column(os.path.join(RES_DIR, filename), col=col)
+
+
+def _build_dropdown(options):
+    """Convert a list to (value, caption) tuples."""
+    return [(x, x) if x is not None else ('', NOPREF_STR) for x in options]
+
+'''
+
+
 
 class SearchForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -56,9 +86,10 @@ class SearchForm(forms.Form):
         help_text='e.g. 1J6Z',
         required=True)
 
-def index(request):
+
+
+def home(request):
     context = {}
-    template = loader.get_template('index.html')
     res = None
     if request.method == 'GET':
         # create a form instance and populate it with data from the request:
@@ -106,5 +137,4 @@ def index(request):
         context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
 
     context['form'] = form
-    #return render(request, 'index.html', context)
-    return template.render(context,request)
+    return render(request, 'lyz/index.html', context)

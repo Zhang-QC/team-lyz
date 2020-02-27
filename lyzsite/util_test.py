@@ -3,7 +3,7 @@ import requests
 import re
 import urllib3
 import certifi
-import pa2util
+import pa2util_test
 from Bio.Alphabet import IUPAC, Gapped
 from Bio.Align import MultipleSeqAlignment
 
