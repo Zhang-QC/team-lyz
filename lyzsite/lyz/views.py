@@ -62,19 +62,24 @@ def index(request):
     res = None
     if request.method == 'GET':
         # create a form instance and populate it with data from the request:
-        '''
+        
         print(request.GET)
         if "terms" not in request.GET:
-            return template.render(context, request)
+            print("skip")
+            #d = template.render(request, context)
+            #print(d)
+            print('return suuc')
+            return HttpResponse(template.render({}, request)) #template.render(context, request)
         print("NotSKIP")
-        '''
+        
         form = SearchForm(request.GET)
+        print("FORM_test")
         # check whether it's valid:
         if form.is_valid():
             # Convert form data to an args dictionary for find_courses
             if 'query' not in form.cleaned_data:
                 print("skip")
-                return template.render(context, request)
+                return HttpResponse(template.render({}, request))
             print("Not skip")
             args = {}
             if form.cleaned_data['query']:
@@ -117,4 +122,4 @@ def index(request):
 
     context['form'] = form
     #return render(request, 'index.html', context)
-    return template.render(context,request)
+    return HttpResponse(template.render({}, request))
