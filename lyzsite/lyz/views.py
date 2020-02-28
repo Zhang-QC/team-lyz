@@ -62,10 +62,20 @@ def index(request):
     res = None
     if request.method == 'GET':
         # create a form instance and populate it with data from the request:
+        '''
+        print(request.GET)
+        if "terms" not in request.GET:
+            return template.render(context, request)
+        print("NotSKIP")
+        '''
         form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
             # Convert form data to an args dictionary for find_courses
+            if 'query' not in form.cleaned_data:
+                print("skip")
+                return template.render(context, request)
+            print("Not skip")
             args = {}
             if form.cleaned_data['query']:
                 args['terms'] = form.cleaned_data['query']
@@ -103,7 +113,7 @@ def index(request):
 
         context['result'] = result
         context['num_results'] = len(result)
-        context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
+        #context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
 
     context['form'] = form
     #return render(request, 'index.html', context)
