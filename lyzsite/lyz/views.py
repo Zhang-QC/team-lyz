@@ -46,15 +46,21 @@ def _valid_result(pdb):
 
 
 class SearchForm(forms.Form):
+
+    '''
     def __init__(self, *args, **kwargs):
         super(SearchForm, self).__init__(
             *args, **kwargs)
-
+    '''
 
     query = forms.CharField(
         label='Search Protein',
         help_text='e.g. 1J6Z',
-        required=True)
+        required=False)
+    show_args = forms.BooleanField(label='Show args_to_ui',
+                                   required=False)
+
+
 
 def index(request):
     context = {}
@@ -63,27 +69,25 @@ def index(request):
     if request.method == 'GET':
         # create a form instance and populate it with data from the request:
         
-        print(request.GET)
-        if "terms" not in request.GET:
-            print("skip")
-            #d = template.render(request, context)
-            #print(d)
-            print('return suuc')
-            return HttpResponse(template.render({}, request)) #template.render(context, request)
-        print("NotSKIP")
-        
+        #print(request.GET)
+        # if "terms" not in request.GET:
+        #     return HttpResponse(template.render({}, request)) #template.render(context, request)        
         form = SearchForm(request.GET)
-        print("FORM_test")
         # check whether it's valid:
+        #print(form.is_valid())
         if form.is_valid():
             # Convert form data to an args dictionary for find_courses
-            if 'query' not in form.cleaned_data:
-                print("skip")
-                return HttpResponse(template.render({}, request))
-            print("Not skip")
+            # if 'query' not in form.cleaned_data:
+            #     print("skip")
+            #     return HttpResponse(template.render({}, request))
+            # print("Not skip")
             args = {}
+            print(form.cleaned_data['query'])
             if form.cleaned_data['query']:
                 args['terms'] = form.cleaned_data['query']
+            print(args)
+            if form.cleaned_data['show_args']:
+                context['args'] = 'args_to_ui = ' + json.dumps(args, indent=2)
             try:
                 res = get_fasta(args)
             except Exception as e:
@@ -102,13 +106,13 @@ def index(request):
     # Handle different responses of res
     if res is None:
         context['result'] = None
-    elif isinstance(res, str):
-        context['result'] = None
-        context['err'] = res
-        result = None
-    elif not _valid_result(res):
-        context['result'] = None
-        context['err'] = ('Return of XXX has the wrong data type.')
+    # elif isinstance(res, str):
+    #     context['result'] = None
+    #     context['err'] = res
+    #     result = None
+    # elif not _valid_result(res):
+    #     context['result'] = None
+    #     context['err'] = ('Return of XXX has the wrong data type.')
     else:
         columns, result = res
 
@@ -119,7 +123,6 @@ def index(request):
         context['result'] = result
         context['num_results'] = len(result)
         #context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
-
-    context['form'] = form
-    #return render(request, 'index.html', context)
-    return HttpResponse(template.render({}, request))
+        context['form'] = form
+    return render(request, 'index.html', context)
+    #return HttpResponse(template.render({}, request))

@@ -16,33 +16,38 @@ AMINO_ACIDS = {"A": "alanine", "R": "arginine", "N": "asparagine",
 "S": "serine", "T": "threonine", "W": "tryptophan", "Y": "tyrosine",
 "V": "valine"}
 
-def get_uniprot_id(pdb_id):
-	'''
-	Input a Protein Data Base ID code, produce the associated UniProt ID code.
-	Return None if the PDB ID is not valid.
+def get_uniprot_id(pdb_id_dic):
+    '''
+    Input a Protein Data Base ID code, produce the associated UniProt ID code.
+    Return None if the PDB ID is not valid.
 
-	Input:
-		pdb_id: a string
+    Input:
+        pdb_id: a string
 
-	Output:
-		A string
-	'''
-	pdb_url = "http://www.rcsb.org/structure/" + pdb_id
-	r = requests.get(pdb_url)
-	text = r.text.encode('iso-8859-1')
-	soup = bs4.BeautifulSoup(text, "html5lib")
+    Output:
+        A string
+    '''
+    print(pdb_id_dic)
+    print(pdb_id_dic.keys())
 
-	url_tag = soup.find_all('a')
-	for potential_url in url_tag:
-		if potential_url.has_attr('href'):
-			check_url = potential_url['href']
-			if check_url[0] != "#":
-				if check_url[:31] == "http://www.uniprot.org/uniprot/":
-					return check_url[31:]
-	print("Your PDB ID is not valid.")
-	return None
+    pdb_url = "http://www.rcsb.org/structure/" + pdb_id_dic["terms"]
+    r = requests.get(pdb_url)
+    text = r.text.encode('iso-8859-1')
+    soup = bs4.BeautifulSoup(text, "html5lib")
+
+    url_tag = soup.find_all('a')
+    for potential_url in url_tag:
+        if potential_url.has_attr('href'):
+            check_url = potential_url['href']
+            if check_url[0] != "#":
+                if check_url[:31] == "http://www.uniprot.org/uniprot/":
+                    return check_url[31:]
+    print("Your PDB ID is not valid.")
+    return None
 
 def get_fasta(uniprot_id):
+    if not uniprot_id:
+        return [[],[]]
     uniprot_url = "https://www.uniprot.org/uniprot/" + uniprot_id + ".fasta"
     r = requests.get(uniprot_url)
     text = r.text.encode()
@@ -123,63 +128,63 @@ def get_similar(protein_name, nmax = 20):
 
 
 def create_MSA(protein_name, nmax):
-	similars = get_similar(protein_name, nmax)
-	alignment_list = {}
-	for id_ in similars:
-		fasta = get_fasta(id_)
-		protein_align = read_fasta(fasta)
-		alignment_list[id_] = ''.join(protein_align)
-	align = MultipleSeqAlignment([], Gapped(IUPAC.unambiguous_dna, "-"))
-	for id_ in alignment_list.keys():
-		align.add_sequence(id_, alignment_list[id_])
-	return align
+    similars = get_similar(protein_name, nmax)
+    alignment_list = {}
+    for id_ in similars:
+        fasta = get_fasta(id_)
+        protein_align = read_fasta(fasta)
+        alignment_list[id_] = ''.join(protein_align)
+    align = MultipleSeqAlignment([], Gapped(IUPAC.unambiguous_dna, "-"))
+    for id_ in alignment_list.keys():
+        align.add_sequence(id_, alignment_list[id_])
+    return align
 
 
 
 class protein:
-	def __init__(self, pdb_id, uniprot_id):
-		self.pdb_id = pdb_id
-		self.uniprot_id = uniprot_id
-		self.fasta = tuo.get_fasta(uniprot_id)
-		name, species, sequence = self.parse_fasta()
-		self.name = name
-		self.species = species
-		self.sequence = sequence
-		self.length = len(self.sequence)
+    def __init__(self, pdb_id, uniprot_id):
+        self.pdb_id = pdb_id
+        self.uniprot_id = uniprot_id
+        self.fasta = tuo.get_fasta(uniprot_id)
+        name, species, sequence = self.parse_fasta()
+        self.name = name
+        self.species = species
+        self.sequence = sequence
+        self.length = len(self.sequence)
 
-	def parse_fasta(self):
-		'''
-		Parse the FASTA file and determine the name, species, and sequence 
-		of the protein.
+    def parse_fasta(self):
+        '''
+        Parse the FASTA file and determine the name, species, and sequence 
+        of the protein.
 
-		Output:
-			name: string
-			species: string
-			sequence: string
-		'''
-		name = ''
-		species = ''
-		sequence = ''
-		return name, species, sequence
+        Output:
+            name: string
+            species: string
+            sequence: string
+        '''
+        name = ''
+        species = ''
+        sequence = ''
+        return name, species, sequence
 
-	def find_similar(self, len_diff, max_num, curated = True):
-		'''
-		Find similar proteins from the UniProt database using the assigned 
-		parameters.
-		'''
-		return None
+    def find_similar(self, len_diff, max_num, curated = True):
+        '''
+        Find similar proteins from the UniProt database using the assigned 
+        parameters.
+        '''
+        return None
 
-	def blast(self):
-		'''
-		Perform a BLAST search on the protein sequence.
-		'''
-		seq = self.sequence
-		return None
+    def blast(self):
+        '''
+        Perform a BLAST search on the protein sequence.
+        '''
+        seq = self.sequence
+        return None
 
-	def __repr__(self):
-		str = self.name + " from " + self.species + " is a " + self.length \
-		+ "peptides long protein with UniProt ID: " + self.uniprot_id
-		return str		
+    def __repr__(self):
+        str = self.name + " from " + self.species + " is a " + self.length \
+        + "peptides long protein with UniProt ID: " + self.uniprot_id
+        return str      
 
 
 
