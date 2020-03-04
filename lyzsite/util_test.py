@@ -45,16 +45,17 @@ def get_uniprot_id(pdb_id_dic):
     print("Your PDB ID is not valid.")
     return None
 
-def get_fasta(uniprot_id):
-    if not uniprot_id:
+def get_fasta(arg_dic):
+    if not arg_dic:
         return [[],[]]
+    uniprot_id = arg_dic['terms']
     uniprot_url = "https://www.uniprot.org/uniprot/" + uniprot_id + ".fasta"
     r = requests.get(uniprot_url)
     text = r.text.encode()
     soup = bs4.BeautifulSoup(text, "html5lib")
     tags = soup.find_all("body")
 
-    return str(tags[0].text)
+    return (['terms'], [str(tags[0].text)])
 
 
 def read_fasta(fast_str):
