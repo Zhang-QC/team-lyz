@@ -12,12 +12,13 @@ from django import forms
 from django.http import HttpResponse
 from django.template import loader
 
-from util_test import get_fasta
+from util_test import go
 
 
 # Create your views here.
 COLUMN_NAMES = dict(
-    first ='first.jpg',
+    term='PDB ID',
+    jpg ='Picture 1',
 )
 NOPREF_STR = 'No preference'
 RES_DIR = os.path.join(os.path.dirname(__file__), '..', 'res')
@@ -122,7 +123,7 @@ def index(request):
             # if 'query' not in form.cleaned_data:
             #     print("skip")
             #     return HttpResponse(template.render({}, request))
-            # print("Not skip")
+            #print("Not skip")
             args = {}
             print(form.cleaned_data['query'])
             if form.cleaned_data['query']:
@@ -135,7 +136,8 @@ def index(request):
             if form.cleaned_data['show_args']:
                 context['args'] = 'args_to_ui = ' + json.dumps(args, indent=2)
             try:
-                res = get_fasta(args)
+                print(args)
+                res = go(args)
             except Exception as e:
                 print('Exception caught')
                 bt = traceback.format_exception(*sys.exc_info()[:3])
@@ -152,13 +154,13 @@ def index(request):
     # Handle different responses of res
     if res is None:
         context['result'] = None
-    # elif isinstance(res, str):
-    #     context['result'] = None
-    #     context['err'] = res
-    #     result = None
-    # elif not _valid_result(res):
-    #     context['result'] = None
-    #     context['err'] = ('Return of XXX has the wrong data type.')
+    elif isinstance(res, str):
+         context['result'] = None
+         context['err'] = res
+         result = None
+    elif not _valid_result(res):
+         context['result'] = None
+         context['err'] = ('Return of XXX has the wrong data type.')
     else:
         columns, result = res
 
@@ -168,7 +170,7 @@ def index(request):
 
         context['result'] = result
         context['num_results'] = len(result)
-        #context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
+        context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
         context['form'] = form
     return render(request, 'index.html', context)
     #return HttpResponse(template.render({}, request))

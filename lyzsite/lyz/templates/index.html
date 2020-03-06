@@ -45,14 +45,19 @@
                     {% for entry in result %}
                     <tr>
                         {% for col in entry %}
-                        <td>{{ col }}</td>
+                        <p>{{ col }}</p>
+                        <h1> This is our first picture </h1>
+                        <img src={{ col }} alt="Image Not Found">
                         {% endfor %}
                     </tr>
                     {% endfor %}
                 </table>
             </div>
             <p class="num_results">Results: {{ num_results }}</p>
+
             {% endif %}
         </div>
+        
+
     </body>
 </html>

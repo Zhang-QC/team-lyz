@@ -45,13 +45,6 @@ def get_uniprot_id(pdb_id_dic):
     print("Your PDB ID is not valid.")
     return None
 
-def get_fasta(args):
-    if not args:
-        return [[],[]]
-    name = args["terms"]
-    return [['first picture'],["/static/first.jpg"]]
-
-'''
 def get_fasta(uniprot_id):
     if not uniprot_id:
         return [[],[]]
@@ -62,7 +55,6 @@ def get_fasta(uniprot_id):
     tags = soup.find_all("body")
 
     return str(tags[0].text)
-'''
 
 
 def read_fasta(fast_str):
