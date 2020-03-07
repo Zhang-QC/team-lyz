@@ -49,7 +49,7 @@ def get_fasta(args):
     if not args:
         return [[],[]]
     name = args["terms"]
-    return [['first picture'],["/static/first.jpg"]]
+    return [['first picture','second picture','third picture','fourth', 'fifth','sixth'], [("first", "2","3","4", "/5","6")]]
 
 '''
 def get_fasta(uniprot_id):

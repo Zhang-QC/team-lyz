@@ -1,13 +1,14 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
         <title>Protein Search</title>
         <link rel="stylesheet" type="text/css" href="{% static "/main.css" %}" />
-    </head>
+    </head>   
     <body>
         <div id="header">
             <h1>Protein Search</h1>
+                <p>A customized protein search tool made by LYZ Group.</p>
         </div>
         <div class="frame">
             <form method="get">
@@ -30,9 +31,6 @@
             {{ err|safe }}
         </div>
         {% endif %}
-
-
-
         <div class="frame">
             {% if result != None %}
             <div class="results">
@@ -40,14 +38,14 @@
                     <tr>
                         {% for col in columns %}
                         <th>{{ col }}</th>
+
                         {% endfor %}
                     </tr>
                     {% for entry in result %}
                     <tr>
-                        {% for col in entry %}
-                        <p>{{ col }}</p>
-                        <h1> This is our first picture </h1>
-                        <img src={{ col }} alt="Image Not Found">
+                        {% for col in entry %} 
+                        <h1> This is our {{ col }} picture </h1>
+                        <img src=/static/{{ col }}.jpg alt="Image Not Found">                                                                       
                         {% endfor %}
                     </tr>
                     {% endfor %}

@@ -18,6 +18,11 @@ from util_test import get_fasta
 # Create your views here.
 COLUMN_NAMES = dict(
     first ='first.jpg',
+    second = '2.jpg',
+    third = '3.jpg',
+    fourth = '4.jpg',
+    fifth = '5.jpg',
+    sixth = '6.jpg',
 )
 NOPREF_STR = 'No preference'
 RES_DIR = os.path.join(os.path.dirname(__file__), '..', 'res')
@@ -26,7 +31,7 @@ RES_DIR = os.path.join(os.path.dirname(__file__), '..', 'res')
 #def index(request):
     #return HttpResponse("Hello, world. You're at the lyz index.")
     #return SearchForm(request)
-def _valid_result(pdb):
+def _valid_result(res):
     '''
     Validate results returned by find_courses.
 
