@@ -7,8 +7,7 @@ Jason Zhang
 import bs4
 import requests
 import util
-import tuo
-#import jenny
+
 
 
 def get_uniprot_id(pdb_id):

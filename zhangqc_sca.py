@@ -13,7 +13,7 @@ from IPython.display import Image
 from Bio.Seq import Seq
 from Bio import motifs
 import colorsys
-import scaTools as sca
+import pySCA.scaTools as sca
 import mpld3
 import pickle
 from optparse import OptionParser

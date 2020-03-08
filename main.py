@@ -9,7 +9,6 @@ from Bio.Align import MultipleSeqAlignment
 import util
 import zhangqc
 import jenny
-import tuo
 import os
 from Bio import SeqIO
 from Bio import AlignIO
@@ -31,12 +30,15 @@ def run(pdb_id, n_seq, E_value):
 	'''
 	uniprot_id = util.get_uniprot_id(pdb_id)
 	my_protein = util.Protein(pdb_id, uniprot_id)
-	my_msa = util.create_MSA(util.get_similar(my_protein.name, n_seq))
+	similar = util.get_similar(my_protein.name, n_seq)
+	my_msa = util.create_MSA(similar)
 	fasta_filename = './lyzsite/static/msa.fasta'
 	f = open(fasta_filename, 'w')
 	AlignIO.write(my_msa, f, "fasta")
 	f.close()
 
+
+def run2():
 	os.chdir('./pySCA')
 	output_name = './lyzsite/static/output.db'
 	zs.perform_calculations(fasta_filename,\
@@ -48,7 +50,9 @@ def run(pdb_id, n_seq, E_value):
 	zs.image_matrix(Dseq, Dsca, Dsect, listS, ind)
 	zs.image_eigenvalues(Dseq, Dsca, Dsect, listS, ind)
 
-	os.chdir('./lyzsite/static')
+
+def run3(pdb_id):
+	#os.chdir('./lyzsite/static')
 	ip.create('model.py','5', pdb_id)
 	os.system('pymol model.py')
 

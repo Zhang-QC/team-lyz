@@ -8,7 +8,10 @@ from Bio.Alphabet import IUPAC, Gapped
 from Bio.Align import MultipleSeqAlignment
 from Bio import SeqIO
 from Bio import AlignIO
-
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+from Bio.Alphabet import IUPAC
+from Bio.Align.Applications import ClustalwCommandline as cc
 
 
 AMINO_ACIDS = {"A": "alanine", "R": "arginine", "N": "asparagine", 
@@ -183,7 +186,14 @@ def parse_fasta(st):
 	
 
 def find_uni_start(protein_name):
-	return 'https://www.uniprot.org/uniprot/?query=' + protein_name +'&sort=score'
+	name = ''
+	for i in protein_name:
+		if (i >= '0') and (i <= '9') or (i >= 'a') and \
+		(i <= 'z') or (i >= 'A') and (i <= 'Z'):
+			name += i
+		elif i == ' ':
+			name += '+'
+	return 'https://www.uniprot.org/uniprot/?query=' + name +'&sort=score'
 
 
 def find_nextpage(url):
@@ -209,7 +219,6 @@ def find_nextpage(url):
 	return None
 
 				
-
 def get_similar(protein_name, nmax = 20):
 	protein_name = protein_name.lower()
 	url = find_uni_start(protein_name)
@@ -222,24 +231,34 @@ def get_similar(protein_name, nmax = 20):
 		result += similar
 		n+=len(similar)
 		url = find_nextpage(url)
-		print(url)
 	if n < nmax:
 		diff = nmax-diff
 		result += code_search(url)[:diff]
 	return result
 
 
-def create_MSA(similars, nmax = 20):
+def create_MSA(similars):
 	alignment_list = {}
+	record_list = []
 	for id_ in similars:
 		fasta = get_fasta(id_)
-		protein_align = read_fasta(fasta)
-		alignment_list[id_] = ''.join(protein_align)
-	align = MultipleSeqAlignment([], Gapped(IUPAC.unambiguous_dna, "-"))
-	for id_ in alignment_list.keys():
-		align.add_sequence(id_, alignment_list[id_])
-	return align
+		header, name, species, sequence = parse_fasta(fasta)
+		db, identifier, entry_name, protein_name, dic = parse_fasta_header(header)
+		record = SeqRecord(Seq(sequence, IUPAC.protein), id = identifier, 
+			name=name, description=header)
+		record_list.append(record)
+	with open('unaligned.fasta', 'w') as output_handle:
+		SeqIO.write(record_list, output_handle, 'fasta')
 
+
+	return None
+
+	#	protein_align = read_fasta(fasta)
+	#	alignment_list[id_] = ''.join(protein_align)
+	#align = MultipleSeqAlignment([], Gapped(IUPAC.unambiguous_dna, "-"))
+	#for id_ in alignment_list.keys():
+	#	align.add_sequence(id_, alignment_list[id_])
+	#return align
 
 
 class Protein:
