@@ -1,0 +1,38 @@
+ PyMOL(TM) Molecular Graphics System, Version 2.3.0.
+ Copyright (c) Schrodinger, LLC.
+ All Rights Reserved.
+ 
+    Created by Warren L. DeLano, Ph.D. 
+ 
+    PyMOL is user-supported open-source software.  Although some versions
+    are freely available, PyMOL is not in the public domain.
+ 
+    If PyMOL is helpful in your work or study, then please volunteer 
+    support for our ongoing efforts to create open and affordable scientific
+    software by purchasing a PyMOL Maintenance and/or Support subscription.
+
+    More information can be found at "http://www.pymol.org".
+ 
+    Enter "help" for a list of commands.
+    Enter "help <command-name>" for information on a specific command.
+
+ Hit ESC anytime to toggle between text and graphics.
+
+ Detected OpenGL version 2.1. Shaders available.
+ Detected GLSL version 1.20.
+ OpenGL graphics engine:
+  GL_VENDOR:   Intel Inc.
+  GL_RENDERER: Intel(R) UHD Graphics 617
+  GL_VERSION:  2.1 INTEL-12.2.17
+ Detected 4 CPU cores.  Enabled multithreaded rendering.
+Traceback (most recent call last):
+  File "/usr/local/Cellar/pymol/2.3.0/libexec/lib/python3.7/site-packages/pymol/parsing.py", line 483, in run
+    run_(path, ns_pymol, ns_pymol)
+  File "/usr/local/Cellar/pymol/2.3.0/libexec/lib/python3.7/site-packages/pymol/parsing.py", line 532, in run_file
+    execfile(file,global_ns,local_ns)
+  File "/usr/local/Cellar/pymol/2.3.0/libexec/lib/python3.7/site-packages/pymol/parsing.py", line 527, in execfile
+    exec(co, global_ns, local_ns)
+  File "tuo.py", line 1, in <module>
+    import bs4
+ModuleNotFoundError: No module named 'bs4'
+
