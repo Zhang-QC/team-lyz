@@ -32,17 +32,16 @@ def run(pdb_id, n_seq, E_value):
 	my_protein = util.Protein(pdb_id, uniprot_id)
 	similar = util.get_similar(my_protein.name, n_seq)
 	my_msa = util.create_MSA(similar)
-	fasta_filename = './lyzsite/static/msa.fasta'
-	f = open(fasta_filename, 'w')
-	AlignIO.write(my_msa, f, "fasta")
-	f.close()
 
 
-def run2():
-	os.chdir('./pySCA')
+def run2(pdb_id, my_protein, fasta_filename):
+	#os.chdir('pySCA')
 	output_name = './lyzsite/static/output.db'
 	zs.perform_calculations(fasta_filename,\
 	 pdb_id, my_protein.species, output_name)
+
+
+def run3():
 	os.chdir('..')
 	zs.process_output(output_name)
 	zs.image_pairwise(Dseq, Dsca, Dsect, listS, ind)
@@ -51,7 +50,7 @@ def run2():
 	zs.image_eigenvalues(Dseq, Dsca, Dsect, listS, ind)
 
 
-def run3(pdb_id):
+def run4(pdb_id):
 	#os.chdir('./lyzsite/static')
 	ip.create('model.py','5', pdb_id)
 	os.system('pymol model.py')
