@@ -4,6 +4,7 @@ import re
 import urllib3
 import certifi
 import pa2util
+import os
 from Bio.Alphabet import IUPAC, Gapped
 from Bio.Align import MultipleSeqAlignment
 from Bio import SeqIO
@@ -11,7 +12,7 @@ from Bio import AlignIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.Alphabet import IUPAC
-from Bio.Align.Applications import ClustalwCommandline as cc
+from Bio.Align.Applications import ClustalOmegaCommandline as coc
 
 
 AMINO_ACIDS = {"A": "alanine", "R": "arginine", "N": "asparagine", 
@@ -90,7 +91,6 @@ def code_search(url):
 	for row in trs:
 		lst_codes.append(row.attrs["id"])
 	return lst_codes
-
 
 
 def is_sequence(seq):
@@ -220,6 +220,9 @@ def find_nextpage(url):
 
 				
 def get_similar(protein_name, nmax = 20):
+	'''
+	Can be faster.
+	'''
 	protein_name = protein_name.lower()
 	url = find_uni_start(protein_name)
 	n = 0
@@ -233,8 +236,8 @@ def get_similar(protein_name, nmax = 20):
 		url = find_nextpage(url)
 	if n < nmax:
 		diff = nmax-diff
-		result += code_search(url)[:diff]
-	return result
+		result += code_search(url)[:diff]		
+	return result[0: nmax]
 
 
 def create_MSA(similars):
@@ -249,8 +252,9 @@ def create_MSA(similars):
 		record_list.append(record)
 	with open('unaligned.fasta', 'w') as output_handle:
 		SeqIO.write(record_list, output_handle, 'fasta')
-
-
+	cline = coc(infile = 'unaligned.fasta', outfile = 'aligned.fasta', 
+		verbose = True, auto = True, force = True)
+	os.system(str(cline))
 	return None
 
 	#	protein_align = read_fasta(fasta)
