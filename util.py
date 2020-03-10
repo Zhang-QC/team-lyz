@@ -61,6 +61,15 @@ def get_uniprot_id(pdb_id):
 
 
 def get_fasta(uniprot_id):
+	'''
+	Get Fasta sequence with uniprot id of a protein
+
+	Input:
+		uniprot_id: a string
+
+	Output:
+		text: fasta sequence string
+	'''
 	uniprot_url = "https://www.uniprot.org/uniprot/" + uniprot_id + ".fasta"
 	r = requests.get(uniprot_url)
 	text = str(r.text.encode())[2:].replace('\\n', '\n')
@@ -69,7 +78,13 @@ def get_fasta(uniprot_id):
 
 def read_fasta(fast_str):
 	'''
-	What is this?
+	Process a fasta sequence string by getting rid of undesired characters
+
+	Input:
+		fasta_str: fasta sequence
+
+	Output: 
+		total_list: a list of subsequences of a fasta string
 	'''
 	strin = fast_str.split('\n')
 	substr = strin[0]
@@ -82,6 +97,16 @@ def read_fasta(fast_str):
 	
 
 def code_search(url):
+	'''
+	Collect all the uniprot ids of proteins that are existing on the webpage
+
+	Input:
+		url: a given url
+
+	Output: 
+		lst_codes: a list of uniprot id
+
+	'''
 	r = requests.get(url)
 	text = r.text.encode()
 	soup = bs4.BeautifulSoup(text,"html.parser")
@@ -186,6 +211,16 @@ def parse_fasta(st):
 	
 
 def find_uni_start(protein_name):
+	'''
+	Use regular expression to find the starting url of a protein search
+
+	Input:
+		protein_name: name of the protein
+
+	Output:
+		The url of the first page of a protein search
+	'''
+	'''
 	name = ''
 	for i in protein_name:
 		if (i >= '0') and (i <= '9') or (i >= 'a') and \
@@ -193,6 +228,9 @@ def find_uni_start(protein_name):
 			name += i
 		elif i == ' ':
 			name += '+'
+	'''
+	d = re.sub(r'[^"[A-Za-z0-9]+',' ',protein_name)
+	processed = d.replace(" ","+")
 	return 'https://www.uniprot.org/uniprot/?query=' + name +'&sort=score'
 
 
