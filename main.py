@@ -12,6 +12,8 @@ import jenny
 import os
 from Bio import SeqIO
 from Bio import AlignIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 import zhangqc_sca as zs
 import integrate_pymol as ip
 
@@ -31,12 +33,15 @@ def run(pdb_id, n_seq, E_value):
 	uniprot_id = util.get_uniprot_id(pdb_id)
 	my_protein = util.Protein(pdb_id, uniprot_id)
 	similar = util.get_similar(my_protein.name, n_seq)
+	record = SeqRecord(Seq(my_protein.sequence, IUPAC.protein), 
+		id = my_protein.uniprot_id, name=my_protein.name)
+	with open('./lyzsite/static/reference.fasta', 'w') as output_handle:
+		SeqIO.write(record, output_handle, 'fasta')
 	my_msa = util.create_MSA(similar)
 
 
 def run2(pdb_id, my_protein, fasta_filename):
-	#os.chdir('pySCA')
-	output_name = './lyzsite/static/output.db'
+	output_name = 'sca_result.db'
 	zs.perform_calculations(fasta_filename,\
 	 pdb_id, my_protein.species, output_name)
 

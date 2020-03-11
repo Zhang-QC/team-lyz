@@ -20,13 +20,18 @@ from optparse import OptionParser
 
 
 def perform_calculations(fasta_name, pdb_id, species, output_name):
-	l1 = './scaProcessMSA.py ' + fasta_name + ' -s ' + \
-	pdb_id + '-f "' + species + '" -m' + output_name
-	l2 = './scaCore.py ' + output_name
-	l3 = './scaSectorID.py ' + output_name
+	#os.chdir('./pySCA')
+	cwd = os.getcwd()
+	print('***', cwd)
+	l1 = 'python3 ./pySCA/scaProcessMSA.py ' + fasta_name + \
+	' -r ./pySCA/Inputs/reference.fasta' + ' -t --output ' + output_name 
+	l2 = 'python3 ./pySCA/scaCore.py ' + output_name
+	l3 = 'python3 ./pySCA/scaSectorID.py ' + output_name
+	print(l1)
 	os.system(l1) 
 	os.system(l2)
 	os.system(l3)
+	#os.chdir('..')
 
 
 def process_output(output_name):

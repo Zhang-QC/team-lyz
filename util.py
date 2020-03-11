@@ -204,7 +204,7 @@ def parse_fasta(st):
 	for i in l:
 		if i[0] == '>':
 			header = i
-		else:
+		elif i[0] != "'":
 			seq += i
 	db, identifier, entry_name, protein_name, dic = parse_fasta_header(header)
 	return header, protein_name, dic['OS'], seq
@@ -288,19 +288,13 @@ def create_MSA(similars):
 		record = SeqRecord(Seq(sequence, IUPAC.protein), id = identifier, 
 			name=name, description=header)
 		record_list.append(record)
-	with open('unaligned.fasta', 'w') as output_handle:
+	with open('./lyzsite/static/unaligned.fasta', 'w') as output_handle:
 		SeqIO.write(record_list, output_handle, 'fasta')
-	cline = coc(infile = 'unaligned.fasta', outfile = 'aligned.fasta', 
+	cline = coc(infile = './lyzsite/static/unaligned.fasta', 
+		outfile = './lyzsite/static/aligned.fasta', 
 		verbose = True, auto = True, force = True)
 	os.system(str(cline))
 	return None
-
-	#	protein_align = read_fasta(fasta)
-	#	alignment_list[id_] = ''.join(protein_align)
-	#align = MultipleSeqAlignment([], Gapped(IUPAC.unambiguous_dna, "-"))
-	#for id_ in alignment_list.keys():
-	#	align.add_sequence(id_, alignment_list[id_])
-	#return align
 
 
 class Protein:
