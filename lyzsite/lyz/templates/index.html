@@ -55,14 +55,8 @@
                         {% endfor %}
                     </tr>
                     {% for entry in result %}
-                    <h1> This is our {{ entry }} picture </h1>
-                    <h1> This is our {{ entry }} picture </h1>
-                    <tr>
-                        {% for col in entry %} 
-                        <h1> This is our {{ col }} picture </h1>
-                        <img src=/static/{{ col }}.jpg alt="Image Not Found">                                                                       
-                        {% endfor %}
-                    </tr>
+                    <h1> {{ entry.1 }} </h1>
+                    <img src=/static/{{ entry.0 }} alt="image not found">
                     {% endfor %}
                 </table>
             </div>

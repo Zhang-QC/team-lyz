@@ -7,6 +7,15 @@ import pa2util_test
 #from Bio.Alphabet import IUPAC, Gapped
 #from Bio.Align import MultipleSeqAlignment
 
+des = {"first": "husky1",
+"2": "husky2",
+"3": "husky1",
+"4": "husky4",
+"5": "husky5",
+"6": "husky6"
+}
+
+
 
 
 AMINO_ACIDS = {"A": "alanine", "R": "arginine", "N": "asparagine", 
@@ -49,7 +58,7 @@ def get_fasta(args):
     if not args:
         return [[],[]]
     name = args["terms"]
-    return [['first picture','second picture','third picture','fourth', 'fifth','sixth'], [("first", "2","3","4", "/5","6")]]
+    return [['picture','des'], [("first.jpg", des['first']),("2.jpg", des['2']),("3.jpg", des['3']),("4.jpg", des['4']), ("5.jpg", des['5']), ("6.jpg", des['6'])]]
 
 '''
 def get_fasta(uniprot_id):
