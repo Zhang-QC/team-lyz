@@ -59,7 +59,7 @@ def image_pairwise(Dseq, Dsca, Dsect, listS, ind):
 	plt.subplot(122)
 	plt.imshow(Dsca['simMat'], vmin=0, vmax=1) 
 	plt.colorbar()
-	plt.savefig('lyzsite/static/1.jpg')
+	plt.savefig('lyzsite/static/1.png')
 
 
 def image_conservation(Dseq, Dsca, Dsect, listS, ind):
@@ -72,14 +72,14 @@ def image_conservation(Dseq, Dsca, Dsect, listS, ind):
 	labels = [Dseq['ats'][k] for k in xticks]
 	axs.set_xticklabels(labels);
 	plt.xlabel('Amino acid position', fontsize=18); plt.ylabel('Di', fontsize=18);
-	plt.savefig('lyzsite/static/2.jpg')
+	plt.savefig('lyzsite/static/2.png')
 
 
 def image_matrix(Dseq, Dsca, Dsect, listS, ind):
 	plt.rcParams['figure.figsize'] = 13, 8
 	plt.imshow(Dsca['Csca'], vmin=0, vmax=1.4,interpolation='none',\
 			   aspect='equal')
-	plt.savefig('lyzsite/static/3.jpg')
+	plt.savefig('lyzsite/static/3.png')
 
 
 '''

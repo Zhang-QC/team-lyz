@@ -69,10 +69,11 @@ def run3():
 
 def run4(pdb_id):
 	print('Generating pyMol graph')
-	#os.chdir('./lyzsite/static')
+	os.chdir('lyzsite/static')
 	ip.create('model.py','5', pdb_id)
 	os.system('pymol model.py')
-
+	os.chdir('..')
+	os.chdir('..')
 
 def run_all(pdb_id, n_seq, E_value):
 	index = run1(pdb_id, n_seq, E_value)
