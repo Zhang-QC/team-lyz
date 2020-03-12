@@ -22,6 +22,7 @@ AMINO_ACIDS = {"A": "alanine", "R": "arginine", "N": "asparagine",
 "S": "serine", "T": "threonine", "W": "tryptophan", "Y": "tyrosine",
 "V": "valine"}
 
+
 FASTA_EXAMPLE = '''
 >sp|P07830|ACT1_DICDI Major actin OS=Dictyostelium discoideum OX=44689 GN=act1 PE=1 SV=2
 MDGEDVQALVIDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHTGVMVGMGQKDSYVGDEAQ
@@ -32,6 +33,7 @@ YELPDGQVITIGNERFRCPEALFQPSFLGMESAGIHETTYNSIMKCDVDIRKDLYGNVVL
 SGGTTMFPGIADRMNKELTALAPSTMKIKIIAPPERKYSVWIGGSILASLSTFQQMWISK
 EEYDESGPSIVHRKCF
 '''
+
 
 def get_uniprot_id(pdb_id):
 	'''
@@ -231,7 +233,7 @@ def find_uni_start(protein_name):
 	'''
 	d = re.sub(r'[^"[A-Za-z0-9]+',' ',protein_name)
 	processed = d.replace(" ","+")
-	return 'https://www.uniprot.org/uniprot/?query=' + name +'&sort=score'
+	return 'https://www.uniprot.org/uniprot/?query=' + processed +'&sort=score'
 
 
 def find_nextpage(url):
