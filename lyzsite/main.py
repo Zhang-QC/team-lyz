@@ -42,7 +42,7 @@ def run1(pdb_id, n_seq, E_value):
 	if my_protein.uniprot_id not in similar:
 		similar.append(my_protein.uniprot_id)
 	my_msa = util.create_MSA(similar)
-	records = list(SeqIO.parse("./lyzsite/static/aligned.fasta", "fasta"))
+	records = list(SeqIO.parse("./static/aligned.fasta", "fasta"))
 	for index, seq in enumerate(records):
 		if seq.id == uniprot_id:
 			return index
@@ -59,25 +59,26 @@ def run3():
 	print('Generating output plots')
 	if not os.path.exists('Outputs/'): 
 		os.makedirs('Outputs/')
+	cwd = os.getcwd()
+	print('&&&', cwd)
 	db, Dseq, Dsca, Dsect, listS, ind = zs.process_output('Outputs/aligned.db')
 	zs.image_pairwise(Dseq, Dsca, Dsect, listS, ind)
 	zs.image_conservation(Dseq, Dsca, Dsect, listS, ind)
 	zs.image_matrix(Dseq, Dsca, Dsect, listS, ind)
 	#zs.image_eigenvalues(Dseq, Dsca, Dsect, listS, ind)
-	os.chdir('..')
 
 
 def run4(pdb_id):
 	print('Generating pyMol graph')
-	os.chdir('lyzsite/static')
+	os.chdir('static')
 	ip.create('model.py','5', pdb_id)
 	os.system('pymol model.py')
 	os.chdir('..')
-	os.chdir('..')
+	
 
 def run_all(pdb_id, n_seq, E_value):
 	index = run1(pdb_id, n_seq, E_value)
-	run2(pdb_id, index, "./lyzsite/static/aligned.fasta")
+	run2(pdb_id, index, "./static/aligned.fasta")
 	run3()
 	run4(pdb_id)
 
