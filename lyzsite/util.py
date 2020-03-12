@@ -259,7 +259,7 @@ def find_nextpage(url):
 	return None
 
 				
-def get_similar(protein_name, nmax = 20):
+def get_similar(protein_name, nmax = "20"):
 	'''
 	Can be faster.
 	'''
@@ -267,17 +267,17 @@ def get_similar(protein_name, nmax = 20):
 	url = find_uni_start(protein_name)
 	n = 0
 	result = []
-	while n < nmax:
+	while n < int(nmax):
 		if url == None:
 			break
 		similar = code_search(url)
 		result += similar
 		n+=len(similar)
 		url = find_nextpage(url)
-	if n < nmax:
-		diff = nmax-diff
+	if n < int(nmax):
+		diff = int(nmax)-diff
 		result += code_search(url)[:diff]		
-	return result[0: nmax]
+	return result[0: int(nmax)]
 
 
 def create_MSA(similars):

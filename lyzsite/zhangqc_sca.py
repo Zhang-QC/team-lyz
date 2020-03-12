@@ -8,8 +8,8 @@ import copy
 import scipy.cluster.hierarchy as sch
 from scipy.stats import scoreatpercentile
 import matplotlib.image as mpimg
-from IPython.display import display
-from IPython.display import Image
+#from IPython.display import display
+#from IPython.display import Image
 from Bio.Seq import Seq
 from Bio import motifs
 import colorsys
