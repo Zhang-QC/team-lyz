@@ -60,9 +60,13 @@
                     {% endfor %}
                 </table>
             </div>
-            <p>Click on the download button to download FASTA file<p>
-            <a href="/static/fasta.txt" download>
-                <input href="/static/fasta.txt" alt="The results will show up after you enter research value" type="submit" value="download">
+            <p>Click on the download button to aligned download FASTA file<p>
+            <a href="/static/aligned.fasta" download>
+                <input href="/static/aligned.fasta" alt="The results will show up after you enter research value" type="submit" value="download">
+            </a>
+            <p>Click on the download button to unaligned download FASTA file<p>
+            <a href="/static/unaligned.fasta" download>
+                <input href="/static/unaligned.fasta" alt="The results will show up after you enter research value" type="submit" value="download">
             </a>
             <p class="num_results">Results: {{ num_results }}</p>
 
