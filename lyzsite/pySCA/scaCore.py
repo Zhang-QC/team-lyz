@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
     # sequence analysis
     print("Computing the sequence projections.")
-    Useq, Uica = sca.seqProj(msa_num, seqw, kseq = 30, kica = 15)
+    #Useq, Uica = sca.seqProj(msa_num, seqw, kseq = 30, kica = 15)
     simMat = sca.seqSim(msa_num)
 
     # SCA calculations
@@ -98,8 +98,8 @@ if __name__ == '__main__':
     fn_noext = fn.split(".")[0]
 
     D={}
-    D['Useq'] = Useq
-    D['Uica'] = Uica
+    #D['Useq'] = Useq
+    #D['Uica'] = Uica
     D['simMat'] = simMat
     D['lbda'] = options.lbda
     D['Dia'] = Dia
