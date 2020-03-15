@@ -24,7 +24,8 @@ AMINO_ACIDS = {"A": "alanine", "R": "arginine", "N": "asparagine",
 
 
 FASTA_EXAMPLE = '''
->sp|P07830|ACT1_DICDI Major actin OS=Dictyostelium discoideum OX=44689 GN=act1 PE=1 SV=2
+>sp|P07830|ACT1_DICDI Major actin OS=Dictyostelium discoideum OX=44689 \
+GN=act1 PE=1 SV=2
 MDGEDVQALVIDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHTGVMVGMGQKDSYVGDEAQ
 SKRGILTLKYPIEHGIVTNWDDMEKIWHHTFYNELRVAPEEHPVLLTEAPLNPKANREKM
 TQIMFETFNTPAMYVAIQAVLSLYASGRTTGIVMDSGDGVSHTVPIYEGYALPHAILRLD
@@ -50,7 +51,6 @@ def get_uniprot_id(pdb_id):
 	r = requests.get(pdb_url)
 	text = r.text.encode('iso-8859-1')
 	soup = bs4.BeautifulSoup(text, "html.parser")
-
 	url_tag = soup.find_all('a')
 	for potential_url in url_tag:
 		if potential_url.has_attr('href'):
@@ -90,7 +90,9 @@ def read_fasta(fast_str):
 	'''
 	strin = fast_str.split('\n')
 	substr = strin[0]
-	sub_list = re.findall('([A-Z][0-9]{5}),([A-Z0-9]{4}_[A-Z]{5}),(OS=[A-Z][a-z\s]+),(OX=[0-9]{4}),(GN=[A-Za-z0-9]{5}),(PE=[0-9]),(SV=[0-9])', substr)
+	sub_list = re.findall('([A-Z][0-9]{5}),([A-Z0-9]{4}_[A-Z]{5}),(OS=[A-Z]\
+		[a-z\s]+),(OX=[0-9]{4}),(GN=[A-Za-z0-9]{5}),(PE=[0-9]),(SV=[0-9])',\
+		 substr)
 	total_list = sub_list
 	for sub_list in strin[1:]:
 		if sub_list != ' ':
@@ -107,7 +109,6 @@ def code_search(url):
 
 	Output: 
 		lst_codes: a list of uniprot id
-
 	'''
 	r = requests.get(url)
 	text = r.text.encode()
@@ -123,8 +124,8 @@ def code_search(url):
 def is_sequence(seq):
 	'''
 	Check if a sequence is a valid amino acid sequence. A valid AA sequence 
-	must have all uppercase letters that corresponds to the 20 one-letter amino
-	acid codes.
+	must have all uppercase letters that corresponds to the 20 one-letter 
+	amino acid codes.
 	'''
 	for i in seq:
 		if i not in util.AMINO_ACIDS:
@@ -222,18 +223,10 @@ def find_uni_start(protein_name):
 	Output:
 		The url of the first page of a protein search
 	'''
-	'''
-	name = ''
-	for i in protein_name:
-		if (i >= '0') and (i <= '9') or (i >= 'a') and \
-		(i <= 'z') or (i >= 'A') and (i <= 'Z'):
-			name += i
-		elif i == ' ':
-			name += '+'
-	'''
 	d = re.sub(r'[^"[A-Za-z0-9]+',' ',protein_name)
 	processed = d.replace(" ","+")
-	return 'https://www.uniprot.org/uniprot/?query=' + processed +'&sort=score'
+	return 'https://www.uniprot.org/uniprot/?query=' + processed + \
+	'&sort=score'
 
 
 def find_nextpage(url):
@@ -245,7 +238,8 @@ def find_nextpage(url):
 
 	Return: the url for next page
 	'''
-	pm = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs = certifi.where())
+	pm = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs =\
+	 certifi.where())
 	html = pm.urlopen(url=url, method='GET').data
 	soup = bs4.BeautifulSoup(html, "html.parser")
 	tags = soup.find_all("a", class_="nextPageLink")
@@ -261,7 +255,14 @@ def find_nextpage(url):
 				
 def get_similar(protein_name, nmax = "20"):
 	'''
-	Can be faster.
+	Find a customized number of similar proteins on the UniProt website
+
+	Input:
+		protein_name: name of the protein
+		nmax: the maximum number of similar proteins that we want
+
+	Return:
+		A list of proteins UniPort codes of similar proteins 
 	'''
 	protein_name = protein_name.lower()
 	url = find_uni_start(protein_name)
@@ -281,12 +282,23 @@ def get_similar(protein_name, nmax = "20"):
 
 
 def create_MSA(similars):
+	'''
+	Create Multiple Sequence Alignment from the similar proteins scrapped from 
+	the UniProt website and save it as fasta files.
+
+	Input:
+		similars: A list of proteins UniPort codes of similar proteins
+
+	Return:
+		None
+	'''
 	alignment_list = {}
 	record_list = []
 	for id_ in similars:
 		fasta = get_fasta(id_)
 		header, name, species, sequence = parse_fasta(fasta)
-		db, identifier, entry_name, protein_name, dic = parse_fasta_header(header)
+		db, identifier, entry_name, protein_name, dic = \
+		 parse_fasta_header(header)
 		record = SeqRecord(Seq(sequence, IUPAC.protein), id = identifier, 
 			name=name, description=header)
 		record_list.append(record)

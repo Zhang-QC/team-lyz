@@ -43,13 +43,15 @@ def find_nextpage(url):
 
 
 def find_uni_start(protein_name):
+    '''
+    Find the starting URL
+
+    Input: protein name
+
+    '''
     return 'https://www.uniprot.org/uniprot/?query=' + protein_name +'&sort=score'
 
 
-
-
-
-#prefer to have dictionary with id as key and alignment as value
 def create_MSA(alignment_list):
     align = MultipleSeqAlignment([], Gapped(IUPAC.unambiguous_dna, "-"))
     for id_ in alignment_list.keys():
@@ -58,7 +60,6 @@ def create_MSA(alignment_list):
 
 
 # The following code is related to calculating SCA
-
 q = [0.073,0.025,0.050,0.061,0.042,0.072,0.023,\
 0.053,0.064,0.089, 0.023, 0.043, 0.052, 0.040,\
  0.052, 0.073, 0.056, 0.063, 0.013, 0.033]
@@ -98,7 +99,6 @@ def get_conservation(align, amino, position):
     '''
     M = len(align)
     f = get_frequency(align, amino, position)
-    #what if q len different from MSA
     return f*ln(f/q[position])+(1-f)*ln((1-f)/(1-q[position]))
 
 def joint_dis(align, a1, a2, p1, p2):
@@ -113,8 +113,21 @@ def joint_dis(align, a1, a2, p1, p2):
 
 
 def cov(align, a1, a2, p1, p2):
-    f1 = get_frequency(a1,p1)
-    f2 = get_frequency(a2,p2)
+    '''
+    Calculate covariance
+
+    Input:
+        align: alignment sequence
+        a1: n
+        a2:
+        p1:
+        p2:
+
+
+
+    '''
+    f1 = get_frequency(align, a1,p1)
+    f2 = get_frequency(align, a2,p2)
     f12 = joint_dis(align, a1, a2, p1, p2)
     w1 = abs(ln(f1*(1-q[p1])/(q[p1]*(1-f1))))
     w2 = abs(ln(f2*(1-q[p2])/(q[p2]*(1-f2))))
