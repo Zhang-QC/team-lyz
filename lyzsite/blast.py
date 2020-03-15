@@ -26,9 +26,7 @@ def write_blast(str1, str2, name1, name2):
         name1: the first sequence name
         name2: the second sequence name
 
-    Return:
-        output: output from blasting two sequences
-        blast_result_record: NCBI XML record output
+    Return: None
     '''
     seq1 = SeqRecord(Seq(str1),
                    id=name1)
@@ -47,7 +45,6 @@ def write_blast(str1, str2, name1, name2):
             print(hsp.query)
             print(hsp.match)
             print(hsp.sbjct)
-    return output, blast_result_record
 
 
 # Run BLAST and parse the output as XML
