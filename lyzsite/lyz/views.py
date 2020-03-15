@@ -17,8 +17,13 @@ from util_test import get_fasta
 
 # Create your views here.
 COLUMN_NAMES = dict(
+<<<<<<< HEAD
     term='PDB ID',
     max_num='Maximum similar DNA',
+=======
+    first ='picture',
+    description = 'description',
+>>>>>>> e4cc9beae9cc5a00ca373959a7ec5dc3f39e022e
 )
 NOPREF_STR = 'No preference'
 RES_DIR = os.path.join(os.path.dirname(__file__), '..', 'res')
@@ -27,7 +32,7 @@ RES_DIR = os.path.join(os.path.dirname(__file__), '..', 'res')
 #def index(request):
     #return HttpResponse("Hello, world. You're at the lyz index.")
     #return SearchForm(request)
-def _valid_result(pdb):
+def _valid_result(res):
     '''
     Validate results returned by find_courses.
 
@@ -93,9 +98,19 @@ class SearchForm(forms.Form):
         help_text='e.g. 1J6Z',
         required=False)
     max_dna = forms.CharField(
+<<<<<<< HEAD
     	label = 'Maximum DNA',
     	help_text='e.g. 20',
         required=False)
+=======
+        label = 'Maximum number of sequences',
+        help_text='e.g. 20',
+        required=False)
+    e_value = forms.CharField(
+        label = 'E value',
+        help_text='e.g. evalue',
+        required=False)    
+>>>>>>> e4cc9beae9cc5a00ca373959a7ec5dc3f39e022e
     show_args = forms.BooleanField(label='Show args_to_ui',
                                    required=False)
 
@@ -126,7 +141,13 @@ def index(request):
                 args['terms'] = form.cleaned_data['query']
             print(args)
             if form.cleaned_data['max_dna']:
+<<<<<<< HEAD
                 args['Maximum DNA'] = form.cleaned_data['max_dna']
+=======
+                args['Maximum number of sequences'] = form.cleaned_data['max_dna']
+            if form.cleaned_data['e_value']:
+                args['E value'] = form.cleaned_data['e_value']
+>>>>>>> e4cc9beae9cc5a00ca373959a7ec5dc3f39e022e
             if form.cleaned_data['show_args']:
                 context['args'] = 'args_to_ui = ' + json.dumps(args, indent=2)
             try:
