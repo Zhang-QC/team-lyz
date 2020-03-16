@@ -66,15 +66,15 @@ class SearchForm(forms.Form):
 
     query = forms.CharField(
         label='Search Protein',
-        help_text='e.g. 1J6Z',
+        help_text='(e.g. 1J6Z)',
         required=False)
     max_dna = forms.CharField(
         label = 'Maximum number of sequences',
-        help_text='e.g. 200 (if this raises key error, increase the number to, for example, 500)',
+        help_text='(e.g. 200) if this raises key error, increase the number higher to, for example, 500',
         required=False)
     L_value = forms.CharField(
         label = 'L value',
-        help_text='e.g. 1.5',
+        help_text='maximum ratio of length of the prospective sequence relative to the query sequence (e.g. 1.5)',
         required=False)    
     show_args = forms.BooleanField(label='Show args_to_ui',
                                    required=False)
