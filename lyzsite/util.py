@@ -253,7 +253,7 @@ def find_nextpage(url):
 	return None
 
 				
-def get_similar(protein_name, nmax = "20"):
+def get_similar(protein_name, nmax = 20):
 	'''
 	Find a customized number of similar proteins on the UniProt website
 

@@ -30,11 +30,12 @@ def run1(pdb_id, n_seq, l_value):
 		files saved in the folder /lyzsite/static
 		the reference position in the aligned fasta file (integer)
 	'''
+	n_seq = int(n_seq)
+	l_value = float(l_value)
 	uniprot_id = util.get_uniprot_id(pdb_id)
 	my_protein = util.Protein(pdb_id, uniprot_id)
 	similar = util.get_similar(my_protein.name, n_seq)
-	n_seq = int(n_seq)
-	l_value = float(l_value)
+
 	print("Completed finding similar sequences, generationg Multiple Sequence\
 	 Alignment:")
 	if my_protein.uniprot_id not in similar:
