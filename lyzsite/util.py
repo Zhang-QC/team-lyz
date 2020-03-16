@@ -273,7 +273,7 @@ def get_similar(protein_name, nmax = 20):
 			break
 		similar = code_search(url)
 		result += similar
-		n+=len(similar)
+		n += len(similar)
 		url = find_nextpage(url)
 	if n < nmax:
 		diff = nmax-diff
@@ -302,7 +302,7 @@ def create_MSA(similars, max_len):
 		if len(sequence) < max_len:
 			print(len(sequence), max_len)
 			record = SeqRecord(Seq(sequence, IUPAC.protein), id = identifier, 
-				name=name, description=header)
+				name = name, description = header)
 			record_list.append(record)
 	with open('./static/unaligned.fasta', 'w') as output_handle:
 		SeqIO.write(record_list, output_handle, 'fasta')
@@ -340,7 +340,8 @@ class Protein:
 
 
 	def __repr__(self):
-		st = self.name + " from " + self.species + " is a " + str(self.length) \
-		+ " peptides long protein with UniProt ID: " + self.uniprot_id
+		st = self.name + " from " + self.species + " is a " + \
+		 str(self.length) \
+		 + " peptides long protein with UniProt ID: " + self.uniprot_id
 		return st     
 

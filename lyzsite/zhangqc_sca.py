@@ -18,10 +18,22 @@ from optparse import OptionParser
 
 
 def perform_calculations(fasta_name, pdb_id, ref_id, output_name):
+	'''
+	Perform the statistical coupling analysis using command line operations.
+
+	Input:
+		fasta_name: string
+		pdb_id: string
+		ref_id: integer
+		output_name: string
+
+	Output:
+		None
+	'''
 	cwd = os.getcwd()
 	print('***', cwd)
-	l1 = 'python3 ./pySCA/scaProcessMSA.py ' + fasta_name + ' -i ' + str(ref_id)\
-	 + ' -t'
+	l1 = 'python3 ./pySCA/scaProcessMSA.py ' + fasta_name + ' -i ' + \
+	str(ref_id) + ' -t'
 	l2 = 'python3 ./pySCA/scaCore.py Outputs/aligned.db'
 	l3 = 'python3 ./pySCA/scaSectorID.py Outputs/aligned.db'
 	print(l1)
@@ -30,6 +42,15 @@ def perform_calculations(fasta_name, pdb_id, ref_id, output_name):
 
 
 def process_output(output_name):
+	'''
+	Process the SCA calculations to acquire the relevant data.
+	
+	Input:
+		output_name: a string
+	
+	Output:
+		db, Dseq, Dsca, Dsect, listS, ind: numpy arrays
+	'''
 	cwd = os.getcwd()
 	print('$$$', cwd)
 	with open(output_name, 'rb') as handle: 
@@ -38,7 +59,7 @@ def process_output(output_name):
 	Dsca = db['sca']
 	Dsect = None
 	listS = [Dsca['simMat'][i,j] for i in range(Dsca['simMat'].shape[0]) \
-			 for j in range(i+1, Dsca['simMat'].shape[1])]
+			 for j in range(i + 1, Dsca['simMat'].shape[1])]
 	Z = sch.linkage(Dsca['simMat'],method = 'complete', metric = 'cityblock')
 	R = sch.dendrogram(Z, no_plot = True)
 	ind = map(int, R['ivl'])
@@ -46,18 +67,36 @@ def process_output(output_name):
 
 
 def image_pairwise(Dseq, Dsca, Dsect, listS, ind):
+	'''
+	Generate the pairwise conservation graphics.
+
+	Input:
+		Dseq, Dsca, Dsect, listS, ind: numpy arrays
+
+	Output:
+		None
+	'''
 	plt.rcParams['figure.figsize'] = 9, 4
 	plt.subplot(121)
 	plt.hist(listS, Dseq['Npos'])
-	plt.xlabel('Pairwise sequence identities', fontsize=14)
-	plt.ylabel('Number', fontsize=14)
+	plt.xlabel('Pairwise sequence identities', fontsize = 14)
+	plt.ylabel('Number', fontsize = 14)
 	plt.subplot(122)
-	plt.imshow(Dsca['simMat'], vmin=0, vmax=1) 
+	plt.imshow(Dsca['simMat'], vmin = 0, vmax = 1) 
 	plt.colorbar()
 	plt.savefig('static/1.png')
 
 
 def image_conservation(Dseq, Dsca, Dsect, listS, ind):
+	'''
+	Generate the conservation bar chart.
+
+	Input:
+		Dseq, Dsca, Dsect, listS, ind: numpy arrays
+
+	Output:
+		None
+	'''
 	fig, axs = plt.subplots(1,1, figsize=(9,4))
 	xvals = [i + 1 for i in range(len(Dsca['Di']))]
 	xticks = [0,45,95,144]
@@ -66,21 +105,25 @@ def image_conservation(Dseq, Dsca, Dsect, listS, ind):
 	axs.set_xticks(xticks);
 	labels = [Dseq['ats'][k] for k in xticks]
 	axs.set_xticklabels(labels);
-	plt.xlabel('Amino acid position', fontsize=18); plt.ylabel('Di', fontsize=18);
+	plt.xlabel('Amino acid position', fontsize = 18); plt.ylabel('Di',\
+	 fontsize = 18);
 	plt.savefig('static/2.png')
 
 
 def image_matrix(Dseq, Dsca, Dsect, listS, ind):
+	'''
+	Generate the SCA matrix.
+
+	Input:
+		Dseq, Dsca, Dsect, listS, ind: numpy arrays
+
+	Output:
+		None
+	'''
 	plt.rcParams['figure.figsize'] = 13, 8
 	plt.imshow(Dsca['Csca'], vmin = 0, vmax = 1.4,interpolation = 'none',\
 			   aspect = 'equal')
 	plt.savefig('static/3.png')
-
-
-def find_sectors(Dseq, Dsca, Dsect, listS, ind):
-	pass
-
-
 
 
 
