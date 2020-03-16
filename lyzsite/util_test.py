@@ -30,7 +30,7 @@ def get_fasta(args):
         return [[],[]]
     name = args["terms"]
     length = args['Maximum number of sequences']
-    evalue = args['E value']
+    evalue = args['L value']
     main.run_all(name, length, evalue)
     return [['picture','des'], [("1.png", des['first']),("2.png", des['2']),\
     ("3.png", des['3']),("4.png", des['4']), ("5.png", des['5'])]]

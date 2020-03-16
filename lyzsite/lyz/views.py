@@ -72,9 +72,9 @@ class SearchForm(forms.Form):
         label = 'Maximum number of sequences',
         help_text='e.g. 20',
         required=False)
-    e_value = forms.CharField(
-        label = 'E value',
-        help_text='e.g. evalue',
+    L_value = forms.CharField(
+        label = 'L value',
+        help_text='e.g. 1.5',
         required=False)    
     show_args = forms.BooleanField(label='Show args_to_ui',
                                    required=False)
@@ -98,7 +98,7 @@ def index(request):
                 args['Maximum number of sequences'] = form.cleaned_data\
                 ['max_dna']
             if form.cleaned_data['e_value']:
-                args['E value'] = form.cleaned_data['e_value']
+                args['L value'] = form.cleaned_data['L_value']
             if form.cleaned_data['show_args']:
                 context['args'] = 'args_to_ui = ' + json.dumps(args, indent=2)
             try:
