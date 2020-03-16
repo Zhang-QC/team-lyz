@@ -95,7 +95,8 @@ def index(request):
             print(args)
             if form.cleaned_data['max_dna']:
                 args['Maximum DNA'] = form.cleaned_data['max_dna']
-                args['Maximum number of sequences'] = form.cleaned_data['max_dna']
+                args['Maximum number of sequences'] = form.cleaned_data\
+                ['max_dna']
             if form.cleaned_data['e_value']:
                 args['E value'] = form.cleaned_data['e_value']
             if form.cleaned_data['show_args']:
