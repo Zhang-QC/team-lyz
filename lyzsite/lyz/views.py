@@ -64,9 +64,8 @@ RANGE_WIDGET = forms.widgets.MultiWidget(widgets=(forms.widgets.NumberInput,
 
 class SearchForm(forms.Form):
 
-    def __init__(self, *args):
-        super(SearchForm, self).__init__(
-            *args)
+    def __init__(self):
+        super(SearchForm, self).__init__()
 
     query = forms.CharField(
         label='Search Protein',
