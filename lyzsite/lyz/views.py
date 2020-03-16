@@ -63,15 +63,13 @@ RANGE_WIDGET = forms.widgets.MultiWidget(widgets=(forms.widgets.NumberInput,
 
 
 class SearchForm(forms.Form):
+
     query = forms.CharField(
         label='Search Protein',
         help_text='e.g. 1J6Z',
         required=False)
     max_dna = forms.CharField(
-    	label = 'Maximum DNA',
-    	help_text='e.g. 20',
-        required=False)
-    label = forms.CharField('Maximum number of sequences',
+        label = 'Maximum number of sequences',
         help_text='e.g. 20',
         required=False)
     e_value = forms.CharField(
