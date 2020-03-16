@@ -59,7 +59,7 @@ def image_pairwise(Dseq, Dsca, Dsect, listS, ind):
 
 def image_conservation(Dseq, Dsca, Dsect, listS, ind):
 	fig, axs = plt.subplots(1,1, figsize=(9,4))
-	xvals = [i+1 for i in range(len(Dsca['Di']))]
+	xvals = [i + 1 for i in range(len(Dsca['Di']))]
 	xticks = [0,45,95,144]
 	plt.bar(xvals,Dsca['Di'], color='k')
 	plt.tick_params(labelsize=11); plt.grid()
@@ -72,8 +72,8 @@ def image_conservation(Dseq, Dsca, Dsect, listS, ind):
 
 def image_matrix(Dseq, Dsca, Dsect, listS, ind):
 	plt.rcParams['figure.figsize'] = 13, 8
-	plt.imshow(Dsca['Csca'], vmin=0, vmax=1.4,interpolation='none',\
-			   aspect='equal')
+	plt.imshow(Dsca['Csca'], vmin = 0, vmax = 1.4,interpolation = 'none',\
+			   aspect = 'equal')
 	plt.savefig('static/3.png')
 
 

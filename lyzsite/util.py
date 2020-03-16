@@ -253,14 +253,14 @@ def find_nextpage(url):
 	return None
 
 				
-def get_similar(protein_name, nmax = "20"):
+def get_similar(protein_name, nmax = 20):
 	'''
 	Find a customized number of similar proteins on the UniProt website
 
 	Input:
 		protein_name: name of the protein
 		nmax: the maximum number of similar proteins that we want
-		
+
 	Return:
 		A list of proteins UniPort codes of similar proteins 
 	'''
@@ -268,17 +268,17 @@ def get_similar(protein_name, nmax = "20"):
 	url = find_uni_start(protein_name)
 	n = 0
 	result = []
-	while n < int(nmax):
+	while n < nmax:
 		if url == None:
 			break
 		similar = code_search(url)
 		result += similar
 		n+=len(similar)
 		url = find_nextpage(url)
-	if n < int(nmax):
-		diff = int(nmax)-diff
+	if n < nmax:
+		diff = nmax-diff
 		result += code_search(url)[:diff]		
-	return result[0: int(nmax)]
+	return result[0: nmax]
 
 
 def create_MSA(similars, max_len):

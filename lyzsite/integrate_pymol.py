@@ -38,7 +38,7 @@ def create(filename, save_to_one, save_to_two, pdb_id,col_lst):
 	"import pymol", 
 	"pymol.finish_launching", 
 	"from pymol import cmd",
-	"cmd.fetch(" + "'"+pdb_id +"'" +")",
+	"cmd.fetch(" + "'" + pdb_id + "'" + ")",
 	"cmd.show('surface', 'all')",
 	"cmd.remove('solvent')",
 	"cmd.set_color('[0.00 , 0.00 , 1.00]', [0.00, 0.00 , 1.00])",
@@ -48,10 +48,10 @@ def create(filename, save_to_one, save_to_two, pdb_id,col_lst):
 	l = normalize(col_lst)
 	for index, val in enumerate(l):
 		col = str(val_to_color(val))
-		st1 = "cmd.show('sphere', 'resi " + str(index) +"')"
-		st2 = "cmd.set_color('"+col+"', "+col+")"
-		st3 = "cmd.color('"+col+"','resi "+ str(index) +"')"
-		st4 = "cmd.set('transparency', "+ str(0.5*val)+")"
+		st1 = "cmd.show('sphere', 'resi " + str(index) + "')"
+		st2 = "cmd.set_color('" + col + "', " + col + ")"
+		st3 = "cmd.color('" + col + "','resi "+ str(index) + "')"
+		st4 = "cmd.set('transparency', " + str(0.5 * val) + ")"
 		lst += [st1, st2, st3, st4]
 	lst += [
 	"cmd.png(" + save_to_one + " , ray = 1, quiet = 1)",
@@ -61,4 +61,3 @@ def create(filename, save_to_one, save_to_two, pdb_id,col_lst):
 	]
 	for x in lst:
 		file.write(x + "\r\n")
-		

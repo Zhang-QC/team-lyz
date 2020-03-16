@@ -23,15 +23,19 @@ def run1(pdb_id, n_seq, l_value):
 	
 	Input:
 		PDB_id: a string
-		n_seq: integer
-		E-value: float
+		n_seq: a string
+		l_value: a string
+
 	Output:
 		files saved in the folder /lyzsite/static
 		the reference position in the aligned fasta file (integer)
 	'''
+	n_seq = int(n_seq)
+	l_value = float(l_value)
 	uniprot_id = util.get_uniprot_id(pdb_id)
 	my_protein = util.Protein(pdb_id, uniprot_id)
 	similar = util.get_similar(my_protein.name, n_seq)
+
 	print("Completed finding similar sequences, generationg Multiple Sequence\
 	 Alignment:")
 	if my_protein.uniprot_id not in similar:
@@ -65,9 +69,11 @@ def run3():
 	'''
 	Run the program to generate plots for output
 	
-	Input: None
+	Input: 
+		None
 
-	Output: None
+	Output: 
+		None
 	'''
 	print('Generating output plots')
 	if not os.path.exists('Outputs/'): 
@@ -80,13 +86,16 @@ def run3():
 	zs.image_matrix(Dseq, Dsca, Dsect, listS, ind)
 	return db, Dseq, Dsca, Dsect, listS, ind
 
+
 def run4(pdb_id, col_lst):
 	'''
 	Run the program to generate pyMol graphs
 	
-	Input: None
+	Input: 
+		None
 
-	Output: None
+	Output: 
+		None
 	'''
 	print('Generating pyMol graph')
 	os.chdir('static')
@@ -105,7 +114,8 @@ def run_all(pdb_id, n_seq, E_value):
 		n_seq: integer
 		E-value: integer
 
-	Output: None
+	Output: 
+		None
 	'''
 	index = run1(pdb_id, n_seq, E_value)
 	run2(pdb_id, index, "./static/aligned.fasta")
