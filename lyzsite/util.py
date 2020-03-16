@@ -256,9 +256,11 @@ def find_nextpage(url):
 def get_similar(protein_name, nmax = "20"):
 	'''
 	Find a customized number of similar proteins on the UniProt website
+
 	Input:
 		protein_name: name of the protein
 		nmax: the maximum number of similar proteins that we want
+		
 	Return:
 		A list of proteins UniPort codes of similar proteins 
 	'''
@@ -283,8 +285,10 @@ def create_MSA(similars, max_len):
 	'''
 	Create Multiple Sequence Alignment from the similar proteins scrapped from 
 	the UniProt website and save it as fasta files.
+
 	Input:
 		similars: A list of proteins UniPort codes of similar proteins
+
 	Return:
 		None
 	'''
@@ -333,14 +337,6 @@ class Protein:
 		'''
 		header, name, species, sequence = parse_fasta(self.fasta)
 		return name, species, sequence
-
-
-	def blast(self):
-		'''
-		Perform a BLAST search on the protein sequence.
-		'''
-		seq = self.sequence
-		return None
 
 
 	def __repr__(self):
