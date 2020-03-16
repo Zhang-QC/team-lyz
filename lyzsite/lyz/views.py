@@ -70,7 +70,7 @@ class SearchForm(forms.Form):
         required=False)
     max_dna = forms.CharField(
         label = 'Maximum number of sequences',
-        help_text='e.g. 20',
+        help_text='e.g. 200',
         required=False)
     L_value = forms.CharField(
         label = 'L value',
