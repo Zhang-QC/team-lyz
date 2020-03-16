@@ -3,10 +3,8 @@ def val_to_color(col):
 	Taking in a float value between zero and one and generate
 	RGB color list [#, #, #] that can be read by pyMol in the 
 	blue-red spectrum.
-
 	Input:
 		col: a float between 0 and 1
-
 	Output:
 		a list of third floats
 	'''
@@ -17,6 +15,10 @@ def normalize(lst):
 	'''
 	Taking in a list of floats, normalized them by dividing them
 	based on the largest value.
+	Input:
+		lst: a list of floats
+	Output:
+		a list of floats
 	'''
 	l = []
 	m = max(lst)
@@ -26,6 +28,9 @@ def normalize(lst):
 
 
 def create(filename, save_to_one, save_to_two, pdb_id,col_lst):
+	'''
+	Create a python file executable by pyMol.
+	'''
 	file = open(filename,"w+")
 	lst = [
 	"import __main__", 
@@ -33,9 +38,6 @@ def create(filename, save_to_one, save_to_two, pdb_id,col_lst):
 	"import pymol", 
 	"pymol.finish_launching", 
 	"from pymol import cmd",
-	#"cmd.stereo('walleye')",
-	#"cmd.set('stereo_shift',0.23)",
-	#"cmd.set('stereo_angle',1.0)",
 	"cmd.fetch(" + "'"+pdb_id +"'" +")",
 	"cmd.show('surface', 'all')",
 	"cmd.remove('solvent')",
@@ -44,7 +46,6 @@ def create(filename, save_to_one, save_to_two, pdb_id,col_lst):
 	"cmd.set('transparency', 0.5)",
 	"cmd.set_color('[1.00 , 0.00 , 0.00]', [1.00 , 0.00 , 0.00])"]
 	l = normalize(col_lst)
-	print(l)
 	for index, val in enumerate(l):
 		col = str(val_to_color(val))
 		st1 = "cmd.show('sphere', 'resi " + str(index) +"')"
@@ -54,9 +55,10 @@ def create(filename, save_to_one, save_to_two, pdb_id,col_lst):
 		lst += [st1, st2, st3, st4]
 	lst += [
 	"cmd.png(" + save_to_one + " , ray = 1, quiet = 1)",
-	"cmd.rotate('z', 180, 'all')",
+	"cmd.rotate('y', 180, 'all')",
 	"cmd.png(" + save_to_two + " , ray = 1, quiet = 1)",
 	"cmd.quit()"
 	]
 	for x in lst:
 		file.write(x + "\r\n")
+		
