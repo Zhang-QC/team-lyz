@@ -99,7 +99,15 @@ def image_conservation(Dseq, Dsca, Dsect, listS, ind):
 	'''
 	fig, axs = plt.subplots(1,1, figsize=(9,4))
 	xvals = [i + 1 for i in range(len(Dsca['Di']))]
-	xticks = [0,45,95,144]
+
+	lens = len(Dsca['Di'])
+	xticks = []
+	k = 0
+	for i in range(10):
+		xticks.append(k)
+		k += lens // 10
+	xticks.append(lens - 1)
+
 	plt.bar(xvals,Dsca['Di'], color='k')
 	plt.tick_params(labelsize=11); plt.grid()
 	axs.set_xticks(xticks);
