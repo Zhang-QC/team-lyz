@@ -256,11 +256,9 @@ def find_nextpage(url):
 def get_similar(protein_name, nmax = "20"):
 	'''
 	Find a customized number of similar proteins on the UniProt website
-
 	Input:
 		protein_name: name of the protein
 		nmax: the maximum number of similar proteins that we want
-
 	Return:
 		A list of proteins UniPort codes of similar proteins 
 	'''
@@ -281,14 +279,12 @@ def get_similar(protein_name, nmax = "20"):
 	return result[0: int(nmax)]
 
 
-def create_MSA(similars):
+def create_MSA(similars, max_len):
 	'''
 	Create Multiple Sequence Alignment from the similar proteins scrapped from 
 	the UniProt website and save it as fasta files.
-
 	Input:
 		similars: A list of proteins UniPort codes of similar proteins
-
 	Return:
 		None
 	'''
@@ -299,9 +295,11 @@ def create_MSA(similars):
 		header, name, species, sequence = parse_fasta(fasta)
 		db, identifier, entry_name, protein_name, dic = \
 		 parse_fasta_header(header)
-		record = SeqRecord(Seq(sequence, IUPAC.protein), id = identifier, 
-			name=name, description=header)
-		record_list.append(record)
+		if len(sequence) < max_len:
+			print(len(sequence), max_len)
+			record = SeqRecord(Seq(sequence, IUPAC.protein), id = identifier, 
+				name=name, description=header)
+			record_list.append(record)
 	with open('./static/unaligned.fasta', 'w') as output_handle:
 		SeqIO.write(record_list, output_handle, 'fasta')
 	cline = coc(infile = './static/unaligned.fasta', 
@@ -337,14 +335,6 @@ class Protein:
 		return name, species, sequence
 
 
-	def find_similar(self, len_diff, max_num, curated = True):
-		'''
-		Find similar proteins from the UniProt database using the assigned 
-		parameters.
-		'''
-		return None
-
-
 	def blast(self):
 		'''
 		Perform a BLAST search on the protein sequence.
@@ -357,76 +347,4 @@ class Protein:
 		st = self.name + " from " + self.species + " is a " + str(self.length) \
 		+ " peptides long protein with UniProt ID: " + self.uniprot_id
 		return st     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

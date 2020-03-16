@@ -17,15 +17,14 @@ import zhangqc_sca as zs
 import integrate_pymol as ip
 
 
-def run1(pdb_id, n_seq, E_value):
+def run1(pdb_id, n_seq, l_value):
 	'''
 	Run the program.
 	
 	Input:
 		PDB_id: a string
 		n_seq: integer
-		E-value: integer
-
+		E-value: float
 	Output:
 		files saved in the folder /lyzsite/static
 		the reference position in the aligned fasta file (integer)
@@ -37,7 +36,8 @@ def run1(pdb_id, n_seq, E_value):
 	 Alignment:")
 	if my_protein.uniprot_id not in similar:
 		similar.append(my_protein.uniprot_id)
-	my_msa = util.create_MSA(similar)
+	max_len = my_protein.length * l_value
+	my_msa = util.create_MSA(similar, max_len)
 	records = list(SeqIO.parse("./static/aligned.fasta", "fasta"))
 	for index, seq in enumerate(records):
 		if seq.id == uniprot_id:
@@ -111,4 +111,3 @@ def run_all(pdb_id, n_seq, E_value):
 	run2(pdb_id, index, "./static/aligned.fasta")
 	db, Dseq, Dsca, Dsect, listS, ind = run3()
 	run4(pdb_id, Dsca['Di'])
-
