@@ -8,8 +8,6 @@ import copy
 import scipy.cluster.hierarchy as sch
 from scipy.stats import scoreatpercentile
 import matplotlib.image as mpimg
-#from IPython.display import display
-#from IPython.display import Image
 from Bio.Seq import Seq
 from Bio import motifs
 import colorsys
@@ -20,18 +18,15 @@ from optparse import OptionParser
 
 
 def perform_calculations(fasta_name, pdb_id, ref_id, output_name):
-	#os.chdir('./pySCA')
 	cwd = os.getcwd()
 	print('***', cwd)
 	l1 = 'python3 ./pySCA/scaProcessMSA.py ' + fasta_name + ' -i ' + str(ref_id)\
-	 + ' -t' #+ '--output ' + output_name 
+	 + ' -t'
 	l2 = 'python3 ./pySCA/scaCore.py Outputs/aligned.db'
 	l3 = 'python3 ./pySCA/scaSectorID.py Outputs/aligned.db'
 	print(l1)
 	os.system(l1) 
 	os.system(l2)
-	#os.system(l3)
-	#os.chdir('..')
 
 
 def process_output(output_name):
@@ -41,7 +36,7 @@ def process_output(output_name):
 		db = pickle.load(handle) 
 	Dseq = db['sequence']
 	Dsca = db['sca']
-	Dsect = None #db['sector']
+	Dsect = None
 	listS = [Dsca['simMat'][i,j] for i in range(Dsca['simMat'].shape[0]) \
 			 for j in range(i+1, Dsca['simMat'].shape[1])]
 	Z = sch.linkage(Dsca['simMat'],method = 'complete', metric = 'cityblock')
@@ -81,20 +76,6 @@ def image_matrix(Dseq, Dsca, Dsect, listS, ind):
 			   aspect='equal')
 	plt.savefig('static/3.png')
 
-
-'''
-def image_eigenvalues(Dseq, Dsca, Dsect, listS, ind):
-	plt.rcParams['figure.figsize'] = 9, 4
-	hist0, bins = np.histogram(Dsca['Lrand'].flatten(), bins=Dseq['Npos'], \
-						   range=(0,Dsect['Lsca'].max()))
-	hist1, bins = np.histogram(Dsect['Lsca'], bins=Dseq['Npos'], \
-							   range=(0,Dsect['Lsca'].max()))
-	plt.bar(bins[:-1], hist1, np.diff(bins),color='k')
-	plt.plot(bins[:-1], hist0/Dsca['Ntrials'], 'r', linewidth=3)
-	plt.tick_params(labelsize=11)
-	plt.xlabel('Eigenvalues', fontsize=18); plt.ylabel('Numbers', fontsize=18)
-	plt.savefig('eigenvalues.jpg')
-'''
 
 def find_sectors(Dseq, Dsca, Dsect, listS, ind):
 	pass
