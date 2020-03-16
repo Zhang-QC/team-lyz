@@ -97,7 +97,7 @@ def index(request):
                 args['Maximum DNA'] = form.cleaned_data['max_dna']
                 args['Maximum number of sequences'] = form.cleaned_data\
                 ['max_dna']
-            if form.cleaned_data['e_value']:
+            if form.cleaned_data['L_value']:
                 args['L value'] = form.cleaned_data['L_value']
             if form.cleaned_data['show_args']:
                 context['args'] = 'args_to_ui = ' + json.dumps(args, indent=2)
