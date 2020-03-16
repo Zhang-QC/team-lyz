@@ -51,6 +51,7 @@ def write_blast(str1, str2, name1, name2):
 output = NcbiblastpCommandline(query="seq1.fasta", subject="seq2.fasta", outfmt=5)()[0]
 blast_result_record = NCBIXML.read(StringIO(output))
 
+
 # Print some information on the result
 for alignment in blast_result_record.alignments:
     for hsp in alignment.hsps:

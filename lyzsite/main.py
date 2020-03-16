@@ -78,9 +78,9 @@ def run3():
 	zs.image_pairwise(Dseq, Dsca, Dsect, listS, ind)
 	zs.image_conservation(Dseq, Dsca, Dsect, listS, ind)
 	zs.image_matrix(Dseq, Dsca, Dsect, listS, ind)
+	return db, Dseq, Dsca, Dsect, listS, ind
 
-
-def run4(pdb_id):
+def run4(pdb_id, col_lst):
 	'''
 	Run the program to generate pyMol graphs
 	
@@ -90,7 +90,7 @@ def run4(pdb_id):
 	'''
 	print('Generating pyMol graph')
 	os.chdir('static')
-	ip.create('model.py','5', pdb_id)
+	ip.create('model.py','4','5', pdb_id, col_lst)
 	os.system('pymol model.py')
 	os.chdir('..')
 	
@@ -109,6 +109,6 @@ def run_all(pdb_id, n_seq, E_value):
 	'''
 	index = run1(pdb_id, n_seq, E_value)
 	run2(pdb_id, index, "./static/aligned.fasta")
-	run3()
-	run4(pdb_id)
+	db, Dseq, Dsca, Dsect, listS, ind = run3()
+	run4(pdb_id, Dsca['Di'])
 
